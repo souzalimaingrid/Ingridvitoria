@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz do Bob Esponja</title>
+    <style>
+        /* Estilização da página (CSS) */
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #87CEEB; /* Azul céu da Fenda do Biquíni */
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #quiz-container {
+            background-color: #FFFDE7; /* Amarelo Bob Esponja */
+            border: 4px solid #FBC02D;
+            border-radius: 15px;
+            padding: 20px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        h1 { color: #D84315; }
+        .btn {
+            background-color: #29B6F6;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 8px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        .btn:hover { background-color: #0288D1; }
+        .btn:disabled { cursor: not-allowed; }
+        
+        #next-btn {
+            background-color: #FF9800;
+            display: none;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        #next-btn:hover { background-color: #F57C00; }
+        .hide { display: none; }
+    </style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <h1>Quiz do Bob Esponja! 🍍</h1>
+    
+    <div id="question-container">
+        <h2 id="question">Pergunta vai aqui</h2>
+        <div id="answer-buttons">
+            <!-- Os botões de resposta aparecerão aqui -->
+        </div>
+    </div>
+    
+    <button id="next-btn" class="btn">Próxima Pergunta</button>
+    
+    <div id="result-container" class="hide">
+        <h2>Fim de Jogo! 🍔</h2>
+        <p id="score-text">Você acertou X de Y perguntas.</p>
+        <button id="restart-btn" class="btn">Jogar Novamente</button>
+    </div>
+</div>
+
+<script>
+    /* Lógica do Quiz (JavaScript) */
+    const questions = [
+        {
+            question: 'Quem mora num abacaxi no fundo do mar?',
+            answers: [
+                { text: 'Patrick Estrela', correct: false },
+                { text: 'Lula Molusco', correct: false },
+                { text: 'Bob Esponja', correct: true },
+                { text: 'Seu Siriguejo', correct: false }
+            ]
+        },
+        {
+            question: 'Qual é o nome do restaurante onde o Bob Esponja trabalha?',
+            answers: [
+                { text: 'Balde de Lixo', correct: false },
+                { text: 'Siri Cascudo', correct: true },
+                { text: 'Lanchonete da Fenda', correct: false },
+                { text: 'Casa do Hambúrguer', correct: false }
+            ]
+        },
+        {
+            question: 'Qual é o nome do caracol de estimação do Bob Esponja?',
+            answers: [
+                { text: 'Gary', correct: true },
+                { text: 'Larry', correct: false },
+                { text: 'Plankton', correct: false },
+                { text: 'Sandy', correct: false }
+            ]
+        },
+        {
+            question: 'Qual instrumento o Lula Molusco adora tocar?',
+            answers: [
+                { text: 'Violão', correct: false },
+                { text: 'Flauta', correct: false },
+                { text: 'Bateria', correct: false },
+                { text: 'Clarinete', correct: true }
+            ]
+        }
+    ];
+
+    const questionElement = document.getElementById('question');
+    const answerButtonsElement = document.getElementById('answer-buttons');
+    const nextButton = document.getElementById('next-btn');
+    const resultContainer = document.getElementById('result-container');
+    const questionContainer = document.getElementById('question-container');
+    const scoreText = document.getElementById('score-text');
+    const restartButton = document.getElementById('restart-btn');
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    function startGame() {
+        currentQuestionIndex = 0;
+        score = 0;
+        nextButton.style.display = 'none';
+        resultContainer.classList.add('hide');
+        questionContainer.classList.remove('hide');
+        showQuestion();
+    }
+
+    function showQuestion() {
+        resetState();
+        let currentQuestion = questions[currentQuestionIndex];
+        questionElement.innerText = currentQuestion.question;
+
+        currentQuestion.answers.forEach(answer => {
+            const button = document.createElement('button');
+            button.innerText = answer.text;
+            button.classList.add('btn');
+            if (answer.correct) {
+                button.dataset.correct = answer.correct;
+            }
+            button.addEventListener('click', selectAnswer);
+            answerButtonsElement.appendChild(button);
+        });
+    }
+
+    function resetState() {
+        nextButton.style.display = 'none';
+        while (answerButtonsElement.firstChild) {
+            answerButtonsElement.removeChild(answerButtonsElement.firstChild);
+        }
+    }
+
+    function selectAnswer(e) {
+        const selectedButton = e.target;
+        const isCorrect = selectedButton.dataset.correct === 'true';
+        
+        if (isCorrect) {
+            score++;
+            selectedButton.style.backgroundColor = '#4CAF50'; // Verde para acerto
+        } else {
+            selectedButton.style.backgroundColor = '#f44336'; // Vermelho para erro
+        }
+        
+        // Mostra a resposta certa e desativa os botões
+        Array.from(answerButtonsElement.children).forEach(button => {
+            if (button.dataset.correct === 'true') {
+                button.style.backgroundColor = '#4CAF50';
+            }
+            button.disabled = true;
+        });
+        
+        if (questions.length > currentQuestionIndex + 1) {
+            nextButton.style.display = 'block';
+        } else {
+            setTimeout(showResult, 1000);
+        }
+    }
+
+    nextButton.addEventListener('click', () => {
+        currentQuestionIndex++;
+        showQuestion();
+    });
+
+    restartButton.addEventListener('click', startGame);
+
+    function showResult() {
+        questionContainer.classList.add('hide');
+        resultContainer.classList.remove('hide');
+        scoreText.innerText = `Você acertou ${score} de ${questions.length} perguntas!`;
+    }
+
+    // Inicia o jogo assim que a página carrega
+    startGame();
+</script>
+
+</body>
+</html>
