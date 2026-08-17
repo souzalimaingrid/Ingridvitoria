@@ -205,4 +205,185 @@
 </script>
 
 </body>
-</html>
+</html>const questions = [
+    {
+        question: 'Qual é a fórmula mais cobiçada da Fenda do Biquíni?',
+        answers: [
+            { text: 'A fórmula secreta do Hambúrguer de Siri', correct: true },
+            { text: 'A receita do suco de algas', correct: false },
+            { text: 'O tempero especial do Balde de Lixo', correct: false },
+            { text: 'A poção de invisibilidade da Sandy', correct: false }
+        ]
+    },
+    {
+        question: 'Se seus amigos te descrevem como avoado, engraçado e super leal, qual personagem você seria?',
+        answers: [
+            { text: 'Patrick Estrela', correct: true },
+            { text: 'Lula Molusco', correct: false },
+            { text: 'Plankton', correct: false },
+            { text: 'Seu Siriguejo', correct: false }
+        ]
+    },
+    {
+        question: 'Qual é o maior sonho do vilão Plankton?',
+        answers: [
+            { text: 'Roubar a fórmula do Hambúrguer de Siri', correct: true },
+            { text: 'Comprar o Siri Cascudo', correct: false },
+            { text: 'Aprender a tocar clarinete', correct: false },
+            { text: 'Virar um super-herói', correct: false }
+        ]
+    },
+    {
+        question: 'Qual é a profissão do Bob Esponja no restaurante Siri Cascudo?',
+        answers: [
+            { text: 'Cozinheiro de Hambúrguer de Siri', correct: true },
+            { text: 'Gerente financeiro', correct: false },
+            { text: 'Atendente de caixa', correct: false },
+            { text: 'Entregador de pizza', correct: false }
+        ]
+    },
+    {
+        question: 'Seus amigos dizem que você é rabugento mas no fundo gosta da companhia deles. Quem é você?',
+        answers: [
+            { text: 'Lula Molusco', correct: true },
+            { text: 'Bob Esponja', correct: false },
+            { text: 'Larry a Lagosta', correct: false },
+            { text: 'Gary', correct: false }
+        ]
+    },
+    {
+        question: 'Qual é o nome da esquilo cientista que mora em uma cúpula de ar?',
+        answers: [
+            { text: 'Sandy Bochechas', correct: true },
+            { text: 'Pérola', correct: false },
+            { text: 'Karen', correct: false },
+            { text: 'Sra. Puff', correct: false }
+        ]
+    },
+    {
+        question: 'Qual é o passatempo favorito do Bob Esponja e do Patrick aos finais de semana?',
+        answers: [
+            { text: 'Caçar águas-vivas no campo', correct: true },
+            { text: 'Jogar futebol americano', correct: false },
+            { text: 'Nadar na Goo Lagoon', correct: false },
+            { text: 'Fazer compras no shopping', correct: false }
+        ]
+    },
+    {
+        question: 'Qual é o nome da instrutora da escola de pilotagem marinha?',
+        answers: [
+            { text: 'Sra. Puff', correct: true },
+            { text: 'Pérola', correct: false },
+            { text: 'Karen', correct: false },
+            { text: 'Sandy', correct: false }
+        ]
+    },
+    {
+        question: 'Onde o Patrick Estrela mora na Fenda do Biquíni?',
+        answers: [
+            { text: 'Debaixo de uma pedra', correct: true },
+            { text: 'Em uma casa de madeira', correct: false },
+            { text: 'Em um abacaxi', correct: false },
+            { text: 'Em uma cabeça de estátua', correct: false }
+        ]
+    },
+    {
+        question: 'Se o seu traço marcante é economizar cada centavo, qual personagem melhor te representa?',
+        answers: [
+            { text: 'Seu Siriguejo', correct: true },
+            { text: 'Bob Esponja', correct: false },
+            { text: 'Lula Molusco', correct: false },
+            { text: 'Homem Sereia', correct: false }
+        ]
+    },
+    {
+        question: 'Quem são os super-heróis aposentados que Bob Esponja e Patrick admiram?',
+        answers: [
+            { text: 'Homem Sereia e Mexilhãozinho', correct: true },
+            { text: 'Capitão Fenda e Tubarão Azul', correct: false },
+            { text: 'Super Estrela e Bolha Espacial', correct: false },
+            { text: 'Guardiões do Mar', correct: false }
+        ]
+    },
+    {
+        question: 'Qual é a frase clássica que o Bob Esponja grita quando acorda animado para trabalhar?',
+        answers: [
+            { text: 'Estou pronto! Estou pronto!', correct: true },
+            { text: 'Hora de fazer dinheiro!', correct: false },
+            { text: 'Lá vou eu de novo!', correct: false },
+            { text: 'Bom dia, Fenda do Biquíni!', correct: false }
+        ]
+    },
+    {
+        question: 'Qual é o nome da esposa de computador do Plankton?',
+        answers: [
+            { text: 'Karen', correct: true },
+            { text: 'Mindy', correct: false },
+            { text: 'Pérola', correct: false },
+            { text: 'Sandy', correct: false }
+        ]
+    },
+    {
+        question: 'Se você é faixa preta em caratê e ama invenções e ciência, você é como:',
+        answers: [
+            { text: 'Sandy Bochechas', correct: true },
+            { text: 'Sra. Puff', correct: false },
+            { text: 'Pérola', correct: false },
+            { text: 'Karen', correct: false }
+        ]
+    },
+    {
+        question: 'Qual é a espécie da filha do Seu Siriguejo, a Pérola?',
+        answers: [
+            { text: 'Baleia', correct: true },
+            { text: 'Tubarão', correct: false },
+            { text: 'Golfinho', correct: false },
+            { text: 'Lula', correct: false }
+        ]
+    },
+    {
+        question: 'O que o Lula Molusco mais gosta de fazer no seu tempo livre?',
+        answers: [
+            { text: 'Pintar retratos e tocar clarinete', correct: true },
+            { text: 'Praticar surfe e musculação', correct: false },
+            { text: 'Cozinhar Hambúrgueres de Siri', correct: false },
+            { text: 'Caçar águas-vivas', correct: false }
+        ]
+    },
+    {
+        question: 'Como o Bob Esponja costuma dar risada?',
+        answers: [
+            { text: 'Bah-hah-hah-hah!', correct: true },
+            { text: 'Muahaha-muahaha!', correct: false },
+            { text: 'Hehehe-hehehe!', correct: false },
+            { text: 'Ho-ho-ho-ho!', correct: false }
+        ]
+    },
+    {
+        question: 'Qual é o nome da praia de areia em Fenda do Biquíni?',
+        answers: [
+            { text: 'Goo Lagoon', correct: true },
+            { text: 'Praia do Sol', correct: false },
+            { text: 'Baía das Águias', correct: false },
+            { text: 'Costa das Conchas', correct: false }
+        ]
+    },
+    {
+        question: 'Se seus amigos te acham calado, inteligente e você adora miar como um gato, você é:',
+        answers: [
+            { text: 'Gary', correct: true },
+            { text: 'Plankton', correct: false },
+            { text: 'Spot', correct: false },
+            { text: 'Lula Molusco', correct: false }
+        ]
+    },
+    {
+        question: 'Qual o nome do rival do Seu Siriguejo e dono do Balde de Lixo?',
+        answers: [
+            { text: 'Sheldon J. Plankton', correct: true },
+            { text: 'Bolha Suja', correct: false },
+            { text: 'Homem Raio', correct: false },
+            { text: 'Robô Siriguejo', correct: false }
+        ]
+    }
+];
