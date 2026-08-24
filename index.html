@@ -360,4 +360,392 @@
 </script>
 
 </body>
+</html><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz do Bob Esponja</title>
+    <style>
+        :root {
+            --bg-blue: #87CEEB;
+            --card-yellow: #FFFDE7;
+            --border-yellow: #FBC02D;
+            --text-dark: #333333;
+            --btn-blue: #29B6F6;
+            --btn-hover: #0288D1;
+            --btn-next: #FF9800;
+            --btn-next-hover: #F57C00;
+            --correct-green: #4CAF50;
+            --wrong-red: #F44336;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', sans-serif;
+            background-color: var(--bg-blue);
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        #quiz-container {
+            background-color: var(--card-yellow);
+            border: 4px solid var(--border-yellow);
+            border-radius: 15px;
+            padding: 25px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        h1 {
+            color: #D84315;
+            margin-bottom: 15px;
+        }
+
+        .progress {
+            font-weight: bold;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .btn-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            background-color: var(--btn-blue);
+            border: none;
+            color: white;
+            padding: 12px 16px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+            width: 100%;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn:hover:not(:disabled) {
+            background-color: var(--btn-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.9;
+        }
+
+        .btn.correct {
+            background-color: var(--correct-green) !important;
+        }
+
+        .btn.wrong {
+            background-color: var(--wrong-red) !important;
+        }
+
+        #next-btn {
+            background-color: var(--btn-next);
+            margin-top: 20px;
+        }
+
+        #next-btn:hover {
+            background-color: var(--btn-next-hover);
+        }
+
+        .hide {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <h1>Quiz do Bob Esponja! 🍍</h1>
+    
+    <div id="question-container">
+        <div id="progress" class="progress"></div>
+        <h2 id="question"></h2>
+        <div id="answer-buttons" class="btn-grid"></div>
+    </div>
+    
+    <button id="next-btn" class="btn hide">Próxima Pergunta</button>
+    
+    <div id="result-container" class="hide">
+        <h2>Fim de Jogo! 🍔</h2>
+        <p id="score-text" style="margin: 15px 0; font-size: 18px;"></p>
+        <button id="restart-btn" class="btn">Jogar Novamente</button>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const questionContainer = document.getElementById('question-container');
+        const questionElement = document.getElementById('question');
+        const answerButtonsElement = document.getElementById('answer-buttons');
+        const nextButton = document.getElementById('next-btn');
+        const resultContainer = document.getElementById('result-container');
+        const scoreText = document.getElementById('score-text');
+        const restartButton = document.getElementById('restart-btn');
+        const progressElement = document.getElementById('progress');
+
+        let shuffledQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        const questions = [
+            {
+                question: 'Quem mora num abacaxi no fundo do mar?',
+                answers: [
+                    { text: 'Patrick Estrela', correct: false },
+                    { text: 'Lula Molusco', correct: false },
+                    { text: 'Bob Esponja', correct: true },
+                    { text: 'Seu Siriguejo', correct: false }
+                ]
+            },
+            {
+                question: 'Qual é o nome do restaurante onde o Bob Esponja trabalha?',
+                answers: [
+                    { text: 'Balde de Lixo', correct: false },
+                    { text: 'Siri Cascudo', correct: true },
+                    { text: 'Lanchonete da Fenda', correct: false },
+                    { text: 'Casa do Hambúrguer', correct: false }
+                ]
+            },
+            {
+                question: 'Qual é o nome do caracol de estimação do Bob Esponja?',
+                answers: [
+                    { text: 'Gary', correct: true },
+                    { text: 'Larry', correct: false },
+                    { text: 'Plankton', correct: false },
+                    { text: 'Sandy', correct: false }
+                ]
+            },
+            {
+                question: 'Qual é a fórmula mais cobiçada da Fenda do Biquíni?',
+                answers: [
+                    { text: 'A fórmula secreta do Hambúrguer de Siri', correct: true },
+                    { text: 'A receita do suco de algas', correct: false },
+                    { text: 'O tempero especial do Balde de Lixo', correct: false },
+                    { text: 'A poção de invisibilidade da Sandy', correct: false }
+                ]
+            },
+            {
+                question: 'Qual é o maior sonho do vilão Plankton?',
+                answers: [
+                    { text: 'Roubar a fórmula do Hambúrguer de Siri', correct: true },
+                    { text: 'Comprar o Siri Cascudo', correct: false },
+                    { text: 'Aprender a tocar clarinete', correct: false },
+                    { text: 'Virar um super-herói', correct: false }
+                ]
+            },
+            {
+                question: 'Qual é a profissão do Bob Esponja no restaurante Siri Cascudo?',
+                answers: [
+                    { text: 'Cozinheiro de Hambúrguer de Siri', correct: true },
+                    { text: 'Gerente financeiro', correct: false },
+                    { text: 'Atendente de caixa', correct: false },
+                    { text: 'Entregador de pizza', correct: false }
+                ]
+            },
+            {
+                question: 'Qual é o nome da esquilo cientista que mora em uma cúpula de ar?',
+                answers: [
+                    { text: 'Sandy Bochechas', correct: true },
+                    { text: 'Pérola', correct: false },
+                    { text: 'Karen', correct: false },
+                    { text: 'Sra. Puff', correct: false }
+                ]
+            },
+            {
+                question: 'Qual é o passatempo favorito do Bob Esponja e do Patrick aos finais de semana?',
+                answers: [
+                    { text: 'Caçar águas-vivas no campo', correct: true },
+                    { text: 'Jogar futebol americano', correct: false },
+                    { text: 'Nadar na Goo Lagoon', correct: false },
+                    { text: 'Fazer compras no shopping', correct: false }
+                ]
+            },
+            {
+                question: 'Qual é o nome da instrutora da escola de pilotagem marinha?',
+                answers: [
+                    { text: 'Sra. Puff', correct: true },
+                    { text: 'Pérola', correct: false },
+                    { text: 'Karen', correct: false },
+                    { text: 'Sandy', correct: false }
+                ]
+            },
+            {
+                question: 'Onde o Patrick Estrela mora na Fenda do Biquíni?',
+                answers: [
+                    { text: 'Debaixo de uma pedra', correct: true },
+                    { text: 'Em uma casa de madeira', correct: false },
+                    { text: 'Em um abacaxi', correct: false },
+                    { text: 'Em uma cabeça de estátua', correct: false }
+                ]
+            },
+            {
+                question: 'Quem são os super-heróis aposentados que Bob Esponja e Patrick admiram?',
+                answers: [
+                    { text: 'Homem Sereia e Mexilhãozinho', correct: true },
+                    { text: 'Capitão Fenda e Tubarão Azul', correct: false },
+                    { text: 'Super Estrela e Bolha Espacial', correct: false },
+                    { text: 'Guardiões do Mar', correct: false }
+                ]
+            },
+            {
+                question: 'Qual é a frase clássica que o Bob Esponja grita quando acorda animado para trabalhar?',
+                answers: [
+                    { text: 'Estou pronto! Estou pronto!', correct: true },
+                    { text: 'Hora de fazer dinheiro!', correct: false },
+                    { text: 'Lá vou eu de novo!', correct: false },
+                    { text: 'Bom dia, Fenda do Biquíni!', correct: false }
+                ]
+            },
+            {
+                question: 'Qual é o nome da esposa de computador do Plankton?',
+                answers: [
+                    { text: 'Karen', correct: true },
+                    { text: 'Mindy', correct: false },
+                    { text: 'Pérola', correct: false },
+                    { text: 'Sandy', correct: false }
+                ]
+            },
+            {
+                question: 'Qual é a espécie da filha do Seu Siriguejo, a Pérola?',
+                answers: [
+                    { text: 'Baleia', correct: true },
+                    { text: 'Tubarão', correct: false },
+                    { text: 'Golfinho', correct: false },
+                    { text: 'Lula', correct: false }
+                ]
+            },
+            {
+                question: 'O que o Lula Molusco mais gosta de fazer no seu tempo livre?',
+                answers: [
+                    { text: 'Pintar retratos e tocar clarinete', correct: true },
+                    { text: 'Praticar surfe e musculação', correct: false },
+                    { text: 'Cozinhar Hambúrgueres de Siri', correct: false },
+                    { text: 'Caçar águas-vivas', correct: false }
+                ]
+            },
+            {
+                question: 'Qual é o nome da praia de areia em Fenda do Biquíni?',
+                answers: [
+                    { text: 'Goo Lagoon', correct: true },
+                    { text: 'Praia do Sol', correct: false },
+                    { text: 'Baía das Águias', correct: false },
+                    { text: 'Costa das Conchas', correct: false }
+                ]
+            },
+            {
+                question: 'Qual o nome do rival do Seu Siriguejo e dono do Balde de Lixo?',
+                answers: [
+                    { text: 'Sheldon J. Plankton', correct: true },
+                    { text: 'Bolha Suja', correct: false },
+                    { text: 'Homem Raio', correct: false },
+                    { text: 'Robô Siriguejo', correct: false }
+                ]
+            }
+        ];
+
+        function startGame() {
+            currentQuestionIndex = 0;
+            score = 0;
+            shuffledQuestions = [...questions].sort(() => Math.random() - 0.5);
+            resultContainer.classList.add('hide');
+            questionContainer.classList.remove('hide');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            resetState();
+            const currentQuestion = shuffledQuestions[currentQuestionIndex];
+            progressElement.innerText = `Pergunta ${currentQuestionIndex + 1} de ${shuffledQuestions.length}`;
+            questionElement.innerText = currentQuestion.question;
+
+            const shuffledAnswers = [...currentQuestion.answers].sort(() => Math.random() - 0.5);
+
+            shuffledAnswers.forEach(answer => {
+                const button = document.createElement('button');
+                button.innerText = answer.text;
+                button.classList.add('btn');
+                if (answer.correct) {
+                    button.dataset.correct = answer.correct;
+                }
+                button.addEventListener('click', selectAnswer);
+                answerButtonsElement.appendChild(button);
+            });
+        }
+
+        function resetState() {
+            nextButton.classList.add('hide');
+            while (answerButtonsElement.firstChild) {
+                answerButtonsElement.removeChild(answerButtonsElement.firstChild);
+            }
+        }
+
+        function selectAnswer(e) {
+            const selectedButton = e.target;
+            const isCorrect = selectedButton.dataset.correct === 'true';
+
+            if (isCorrect) {
+                score++;
+                selectedButton.classList.add('correct');
+            } else {
+                selectedButton.classList.add('wrong');
+            }
+
+            Array.from(answerButtonsElement.children).forEach(button => {
+                if (button.dataset.correct === 'true') {
+                    button.classList.add('correct');
+                }
+                button.disabled = true;
+            });
+
+            if (shuffledQuestions.length > currentQuestionIndex + 1) {
+                nextButton.innerText = 'Próxima Pergunta';
+            } else {
+                nextButton.innerText = 'Ver Resultado';
+            }
+            nextButton.classList.remove('hide');
+        }
+
+        function handleNextButton() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < shuffledQuestions.length) {
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            questionContainer.classList.add('hide');
+            nextButton.classList.add('hide');
+            resultContainer.classList.remove('hide');
+            scoreText.innerText = `Você acertou ${score} de ${shuffledQuestions.length} perguntas!`;
+        }
+
+        nextButton.addEventListener('click', handleNextButton);
+        restartButton.addEventListener('click', startGame);
+
+        startGame();
+    });
+</script>
+
+</body>
 </html>
